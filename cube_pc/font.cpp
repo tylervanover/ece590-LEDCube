@@ -140,9 +140,8 @@ void font_getchar (char chr, unsigned char dst[5])
 
 void font_getbitmap (char bitmap, unsigned char dst[8])
 {
-	int i;
-	
-        //for (i = 0; i < 8; i++)
+	//int i;
+	//for (i = 0; i < 8; i++)
 	//	dst[i] = eeprom_read_byte(&bitmaps[bitmap][i]);
 	
 }

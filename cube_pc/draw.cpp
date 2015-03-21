@@ -284,14 +284,14 @@ char flipbyte (char byte)
 {
 	char flop = 0x00;
 
-	flop = (flop & 0b11111110) | (0b00000001 & (byte >> 7));
-	flop = (flop & 0b11111101) | (0b00000010 & (byte >> 5));
-	flop = (flop & 0b11111011) | (0b00000100 & (byte >> 3));
-	flop = (flop & 0b11110111) | (0b00001000 & (byte >> 1));
-	flop = (flop & 0b11101111) | (0b00010000 & (byte << 1));
-	flop = (flop & 0b11011111) | (0b00100000 & (byte << 3));
-	flop = (flop & 0b10111111) | (0b01000000 & (byte << 5));
-	flop = (flop & 0b01111111) | (0b10000000 & (byte << 7));
+	flop = (flop & 0xFE) | (0x01 & (byte >> 7));
+	flop = (flop & 0xFD) | (0x02 & (byte >> 5));
+	flop = (flop & 0xFB) | (0x04 & (byte >> 3));
+	flop = (flop & 0xF7) | (0x08 & (byte >> 1));
+	flop = (flop & 0xEF) | (0x10 & (byte << 1));
+	flop = (flop & 0xDF) | (0x20 & (byte << 3));
+	flop = (flop & 0xBF) | (0x40 & (byte << 5));
+	flop = (flop & 0x7F) | (0x80 & (byte << 7));
 	return flop;
 }
 

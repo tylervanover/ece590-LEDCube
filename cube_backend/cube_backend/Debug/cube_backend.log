@@ -1,17 +1,12 @@
-﻿Build started 3/20/2015 9:11:10 PM.
+﻿Build started 3/20/2015 9:39:14 PM.
      1>Project "C:\Users\yetijones\Source\Repos\ece590-LEDCube\cube_backend\cube_backend\cube_backend.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\cube_pc\3d.cpp ..\..\cube_pc\cube.cpp ..\..\cube_pc\draw.cpp ..\..\cube_pc\draw_3d.cpp ..\..\cube_pc\effect.cpp ..\..\cube_pc\font.cpp ..\..\cube_pc\gameoflife.cpp ..\..\cube_pc\main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\cube_pc\3d.cpp ..\..\cube_pc\cube.cpp ..\..\cube_pc\draw.cpp ..\..\cube_pc\draw_3d.cpp ..\..\cube_pc\font.cpp ..\..\cube_pc\main.cpp
          main.cpp
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\main.cpp(24): error C2065: 'cubeUpdaterThread' : undeclared identifier
-         gameoflife.cpp
          font.cpp
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\font.cpp(71): warning C4101: 'i' : unreferenced local variable
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\font.cpp(143): warning C4101: 'i' : unreferenced local variable
-         effect.cpp
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\effect.cpp(13): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\effect.cpp(14): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\effect.cpp(823): warning C4101: 'px' : unreferenced local variable
          draw_3d.cpp
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw_3d.cpp(76): error C3861: 'line_3d': identifier not found
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw_3d.cpp(77): error C3861: 'line_3d': identifier not found
@@ -26,30 +21,6 @@
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw_3d.cpp(90): error C3861: 'line_3d': identifier not found
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw_3d.cpp(91): error C3861: 'line_3d': identifier not found
          draw.cpp
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(287): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(287): error C2146: syntax error : missing ')' before identifier 'b11111110'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(287): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(288): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(288): error C2146: syntax error : missing ')' before identifier 'b11111101'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(288): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(289): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(289): error C2146: syntax error : missing ')' before identifier 'b11111011'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(289): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(290): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(290): error C2146: syntax error : missing ')' before identifier 'b11110111'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(290): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(291): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(291): error C2146: syntax error : missing ')' before identifier 'b11101111'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(291): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(292): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(292): error C2146: syntax error : missing ')' before identifier 'b11011111'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(292): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(293): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(293): error C2146: syntax error : missing ')' before identifier 'b10111111'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(293): error C2059: syntax error : ')'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(294): error C2059: syntax error : 'bad suffix on number'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(294): error C2146: syntax error : missing ')' before identifier 'b01111111'
-     1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(294): error C2059: syntax error : ')'
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(340): warning C4244: '=' : conversion from 'float' to 'unsigned char', possible loss of data
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(341): warning C4244: '=' : conversion from 'float' to 'unsigned char', possible loss of data
      1>c:\users\yetijones\source\repos\ece590-ledcube\cube_pc\draw.cpp(349): error C2664: 'void *memcpy(void *,const void *,size_t)' : cannot convert argument 1 from 'volatile unsigned char [8][8]' to 'void *'
@@ -122,4 +93,4 @@
 
 Build FAILED.
 
-Time Elapsed 00:00:02.32
+Time Elapsed 00:00:01.86
