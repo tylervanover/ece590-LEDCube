@@ -1,0 +1,7 @@
+# Log Files
+*.log
+*.tlog
+
+# Compiled Object Files
+*.obj
+*.o
