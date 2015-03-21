@@ -7,6 +7,9 @@
 #include "draw_3d.hpp"
 #include "3d.hpp"
 
+// Number of components to a firework simulation: x,y,z,dx,dy,dz
+#define NUM_FIREWORK_COMPONENTS 6
+
 void linespin (int iterations, int delay)
 {
 	float top_x, top_y, top_z, bot_x, bot_y, bot_z, sin_base;
@@ -202,7 +205,13 @@ void fireworks (int iterations, int n, int delay)
 	float slowrate, gravity;
 
 	// Particles and their position, x,y,z and their movement, dx, dy, dz
-	float particles[n][6];
+	// Compiler warns that it needs a constant expression for declaration of 2D arrays on stack. 
+	// Changing to dynamic allocation instead:
+	float **particles = new float*[n];
+	for (i = 0; i < n; ++i)
+	{
+		particles[i] = new float[NUM_FIREWORK_COMPONENTS];
+	}
 
 	for (i=0; i<iterations; i++)
 	{
@@ -265,12 +274,22 @@ void fireworks (int iterations, int n, int delay)
 
 	}
 
+	// Clean-up resources allocated with malloc.
+	for (i = 0; i < n; ++i)
+	{
+		delete[] particles[i];
+	}
+	delete[] particles;
+
 }
 
 void effect_rotate_random_pixels (int iterations, int delay, int pixels)
 {
-	vertex points[pixels];
-	vertex rotated[pixels];
+	// Vertex defined as struct -- cannot use new without creating a default public constructor
+	// and class implementation. THANKS, Instructables. Must use malloc(). 
+	// Note, this is an array of vertex structs, not a pointer to a struct. 
+	vertex *points = (vertex*)malloc(sizeof(vertex)*pixels);
+	vertex *rotated = (vertex*)malloc(sizeof(vertex)*pixels);
 
 	float fy, fx, fz;
 	int x,y,z;
@@ -318,6 +337,10 @@ void effect_rotate_random_pixels (int iterations, int delay, int pixels)
 
 		delay_ms(delay);
 	}
+
+	// Free the memory for points[] and rotated[] appropriately.
+	free(points);
+	free(rotated);
 
 	fill(0x00);
 }

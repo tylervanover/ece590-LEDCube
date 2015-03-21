@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <thread>
 #include <Windows.h>
 #include "3d.hpp"
 #include "cube.hpp"
@@ -18,10 +19,7 @@ int main (int argc, char **argv)
 
 	cube_init();
 
-	HANDLE cubeThreadHandle; // Thread handle for thread creation.
-	int i, x;
-
-	cubeThreadHandle = (HANDLE)_beginthread(&cubeUpdaterThread, 0, 0);
+	std::thread cubeUpdaterThread(cube_updater);
 
 	while (1)
 	{
@@ -44,9 +42,9 @@ int main (int argc, char **argv)
 		fireworks(7,50,1200);
 
         printf("Effect: gol_play\n");
-        for (i=0; i<10; i++)
+        for (int i=0; i<10; i++)
         {
-            for (x=0; x<20; x++)
+            for (int x=0; x<20; x++)
                 setvoxel(rand()%4,rand()%4,rand()%4);
 
             gol_play(50,1000);
@@ -66,9 +64,4 @@ void *cube_updater (unsigned char rs232_cube[8][8])
         memcpy(pushcube, rs232_cube, 64);
 		cube_push(pushcube);
     }
-}
-
-void cubeUpdaterThread(void* data)
-{
-	printf("I am in a new thread\n.");
 }
