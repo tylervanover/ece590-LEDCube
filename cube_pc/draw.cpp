@@ -1,4 +1,5 @@
 #include <string.h>
+#include <windows.h>
 #include "draw.hpp"
 #include "draw_3d.hpp"
 
@@ -346,8 +347,11 @@ void line(int x1, int y1, int z1, int x2, int y2, int z2)
 	
 void delay_ms(int x)
 {
-    memcpy(rs232_cube, cube, 64);
-	usleep(x*40);
+	// No implicit conversion for volatile char[][]. 
+    memcpy((void*)rs232_cube, (void*)cube, 64);
+	
+	// Windows has no usleep() call, must use <windows.h>::Sleep(DWORD slpMilliseconds)
+	Sleep(x*40);
 }
 
 // Copies the contents of fb (temp cube buffer) into the rendering buffer
@@ -437,92 +441,116 @@ void shift (char axis, int direction)
 	}
 }
 
-
-
+// NEEDS COMMENTING
 void line_3d (int x1, int y1, int z1, int x2, int y2, int z2)
 {
-	int i, dx, dy, dz, l, m, n, x_inc, y_inc, z_inc,
-	err_1, err_2, dx2, dy2, dz2;
+	int i,						// Counter variable.
+		dx, dy, dz,				// Changes in components x, y, and z. 
+		l, m, n,				// Absolute values of change in components. 
+		x_inc, y_inc, z_inc,
+		err_1, err_2, 
+		dx2, dy2, dz2;
+
 	int pixel[3];
+
 	pixel[0] = x1;
 	pixel[1] = y1;
 	pixel[2] = z1;
+
 	dx = x2 - x1;
 	dy = y2 - y1;
 	dz = z2 - z1;
+
 	x_inc = (dx < 0) ? -1 : 1;
 	l = abs(dx);
+	
 	y_inc = (dy < 0) ? -1 : 1;
 	m = abs(dy);
+	
 	z_inc = (dz < 0) ? -1 : 1;
 	n = abs(dz);
+	
 	dx2 = l << 1;
 	dy2 = m << 1;
 	dz2 = n << 1;
+	
 	if ((l >= m) && (l >= n)) {
-	err_1 = dy2 - l;
-	err_2 = dz2 - l;
-	for (i = 0; i < l; i++) {
-	//PUT_PIXEL(pixel);
-	setvoxel(pixel[0],pixel[1],pixel[2]);
-	//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
-	if (err_1 > 0) {
-	pixel[1] += y_inc;
-	err_1 -= dx2;
+		err_1 = dy2 - l;
+		err_2 = dz2 - l;
+		
+		for (i = 0; i < l; i++) {
+			//PUT_PIXEL(pixel);
+			setvoxel(pixel[0],pixel[1],pixel[2]);
+			//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
+			if (err_1 > 0) {
+				pixel[1] += y_inc;
+				err_1 -= dx2;
+			}
+
+			if (err_2 > 0) {
+				pixel[2] += z_inc;
+				err_2 -= dx2;
+			}
+
+			err_1 += dy2;
+			err_2 += dz2;
+			pixel[0] += x_inc;
+		}
+
+	} 
+	else if ((m >= l) && (m >= n)) {
+		err_1 = dx2 - m;
+		err_2 = dz2 - m;
+		
+		for (i = 0; i < m; i++) {
+			//PUT_PIXEL(pixel);
+			setvoxel(pixel[0],pixel[1],pixel[2]);
+			//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
+			if (err_1 > 0) {
+				pixel[0] += x_inc;
+				err_1 -= dy2;
+			}
+
+			if (err_2 > 0) {
+				pixel[2] += z_inc;
+				err_2 -= dy2;
+			}
+
+			err_1 += dx2;
+			err_2 += dz2;
+			pixel[1] += y_inc;
+		}
+	} 
+	else {
+		err_1 = dy2 - n;
+		err_2 = dx2 - n;
+		
+		for (i = 0; i < n; i++) {
+			setvoxel(pixel[0],pixel[1],pixel[2]);
+			//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
+			//PUT_PIXEL(pixel);
+			if (err_1 > 0) {
+				pixel[1] += y_inc;
+				err_1 -= dz2;
+			}
+
+			if (err_2 > 0) {
+				pixel[0] += x_inc;
+				err_2 -= dz2;
+			}
+
+			err_1 += dy2;
+			err_2 += dx2;
+			pixel[2] += z_inc;
+			}
 	}
-	if (err_2 > 0) {
-	pixel[2] += z_inc;
-	err_2 -= dx2;
-	}
-	err_1 += dy2;
-	err_2 += dz2;
-	pixel[0] += x_inc;
-	}
-	} else if ((m >= l) && (m >= n)) {
-	err_1 = dx2 - m;
-	err_2 = dz2 - m;
-	for (i = 0; i < m; i++) {
-	//PUT_PIXEL(pixel);
-	setvoxel(pixel[0],pixel[1],pixel[2]);
-	//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
-	if (err_1 > 0) {
-	pixel[0] += x_inc;
-	err_1 -= dy2;
-	}
-	if (err_2 > 0) {
-	pixel[2] += z_inc;
-	err_2 -= dy2;
-	}
-	err_1 += dx2;
-	err_2 += dz2;
-	pixel[1] += y_inc;
-	}
-	} else {
-	err_1 = dy2 - n;
-	err_2 = dx2 - n;
-	for (i = 0; i < n; i++) {
-	setvoxel(pixel[0],pixel[1],pixel[2]);
-	//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
-	//PUT_PIXEL(pixel);
-	if (err_1 > 0) {
-	pixel[1] += y_inc;
-	err_1 -= dz2;
-	}
-	if (err_2 > 0) {
-	pixel[0] += x_inc;
-	err_2 -= dz2;
-	}
-	err_1 += dy2;
-	err_2 += dx2;
-	pixel[2] += z_inc;
-	}
-	}
+	
 	setvoxel(pixel[0],pixel[1],pixel[2]);
 	//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
 	//PUT_PIXEL(pixel);
 }
 
-
+// NEEDS COMMENTING
 void line_3d_float (vertex point1, vertex point2)
 {
 	float x1, y1, z1, x2, y2, z2;
@@ -534,29 +562,39 @@ void line_3d_float (vertex point1, vertex point2)
 	y2 = point2.y;
 	z2 = point2.z;
 
-
 	float i;
-	float dx, dy, dz, l, m, n, x_inc, y_inc, z_inc,
-	err_1, err_2, dx2, dy2, dz2;
+	float dx, dy, dz, 
+		l, m, n, 
+		x_inc, y_inc, z_inc,
+		err_1, err_2, 
+		dx2, dy2, dz2;
+
 	float pixel[3];
 	pixel[0] = x1;
 	pixel[1] = y1;
 	pixel[2] = z1;
+
 	dx = x2 - x1;
 	dy = y2 - y1;
 	dz = z2 - z1;
+
 	x_inc = (dx < 0) ? -1 : 1;
-	l = abs(dx);
+	l = abs((long)dx);
+
 	y_inc = (dy < 0) ? -1 : 1;
-	m = abs(dy);
+	m = abs ((long)dy);
+
 	z_inc = (dz < 0) ? -1 : 1;
-	n = abs(dz);
+	n = abs ((long)dz);
+
 	dx2 = l*l;
 	dy2 = m*m;
 	dz2 = n*n;
+
 	if ((l >= m) && (l >= n)) {
 		err_1 = dy2 - l;
 		err_2 = dz2 - l;
+		
 		for (i = 0; i < l; i++) {
 			//PUT_PIXEL(pixel);
 			setvoxel((int)pixel[0],(int)pixel[1],(int)pixel[2]);
@@ -565,17 +603,21 @@ void line_3d_float (vertex point1, vertex point2)
 				pixel[1] += y_inc;
 				err_1 -= dx2;
 			}
+
 			if (err_2 > 0) {
 				pixel[2] += z_inc;
 				err_2 -= dx2;
 			}
+
 			err_1 += dy2;
 			err_2 += dz2;
 			pixel[0] += x_inc;
 		}
-	} else if ((m >= l) && (m >= n)) {
+	} 
+	else if ((m >= l) && (m >= n)) {
 		err_1 = dx2 - m;
 		err_2 = dz2 - m;
+	
 		for (i = 0; i < m; i++) {
 			//PUT_PIXEL(pixel);
 			//setvoxel(pixel[0]/scale,pixel[1]/scale,pixel[2]/scale);
@@ -585,17 +627,21 @@ void line_3d_float (vertex point1, vertex point2)
 				pixel[0] += x_inc;
 				err_1 -= dy2;
 			}
+
 			if (err_2 > 0) {
 				pixel[2] += z_inc;
 				err_2 -= dy2;
 			}
+
 			err_1 += dx2;
 			err_2 += dz2;
 			pixel[1] += y_inc;
 		}
-	} else {
+	} 
+	else {
 		err_1 = dy2 - n;
 		err_2 = dx2 - n;
+		
 		for (i = 0; i < n; i++) {
 			//setvoxel(pixel[0]/scale,pixel[1]/scale,pixel[2]/scale);
 			setvoxel((int)pixel[0],(int)pixel[1],(int)pixel[2]);
@@ -605,17 +651,19 @@ void line_3d_float (vertex point1, vertex point2)
 				pixel[1] += y_inc;
 				err_1 -= dz2;
 			}
+
 			if (err_2 > 0) {
 				pixel[0] += x_inc;
 				err_2 -= dz2;
 			}
+
 			err_1 += dy2;
 			err_2 += dx2;
 			pixel[2] += z_inc;
 		}
 	}
 	//setvoxel(pixel[0]/scale,pixel[1]/scale,pixel[2]/scale);
-			setvoxel((int)pixel[0],(int)pixel[1],(int)pixel[2]);
+	setvoxel((int)pixel[0],(int)pixel[1],(int)pixel[2]);
 	//printf("Setting %i %i %i \n", pixel[0],pixel[1],pixel[2]);
 	//PUT_PIXEL(pixel);
 }
@@ -626,7 +674,7 @@ void mirror_x (void)
     unsigned char buffer[8][8];
     unsigned char y,z;
 
-    memcpy(buffer, cube, 64); // copy the current cube into a buffer.
+	memcpy ((void*)buffer, (void*)cube, 64); // copy the current cube into a buffer.
 
     fill(0x00);
 
@@ -644,7 +692,7 @@ void mirror_y (void)
     unsigned char buffer[8][8];
     unsigned char x,y,z;
 
-    memcpy(buffer, cube, 64); // copy the current cube into a buffer.
+	memcpy ((void*)buffer, (void*)cube, 64); // copy the current cube into a buffer.
 
     fill(0x00);
     for (z=0; z<8; z++)
@@ -666,7 +714,7 @@ void mirror_z (void)
     unsigned char buffer[8][8];
     unsigned char z, y;
 
-    memcpy(buffer, cube, 64); // copy the current cube into a buffer.
+	memcpy ((void*)buffer, (void*)cube, 64); // copy the current cube into a buffer.
 
     for (y=0; y<8; y++)
     {

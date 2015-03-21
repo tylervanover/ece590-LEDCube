@@ -1,6 +1,6 @@
 #include <math.h>
 #include "draw_3d.hpp"
-
+#include "draw.hpp"	// THIS IS ABSOLUTELY CRITICAL, as it contains line_3d declaration
 
 vertex point_rotate_around_point (vertex point, vertex center, float rotation_x, float rotation_y, float rotation_z)
 {
@@ -70,7 +70,7 @@ void calculate_cube_corners (vertex pnt[8], vertex center, float size)
 
 void draw_cube_wireframe (vertex pnt[8])
 {
-	int i;
+	//int i;
 	
 	// upper "lid"
 	line_3d ((int)pnt[0].x,(int)pnt[0].y,(int)pnt[0].z,(int)pnt[1].x,(int)pnt[1].y,(int)pnt[1].z);
