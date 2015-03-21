@@ -1,3 +1,4 @@
+#include <math.h>
 #include <string.h>
 #include <windows.h>
 #include "draw.hpp"
@@ -338,8 +339,8 @@ void line(int x1, int y1, int z1, int x2, int y2, int z2)
 
 	for (x = x1; x<=x2;x++)
 	{
-		y = (xy*(x-x1))+y1;
-		z = (xz*(x-x1))+z1;
+		y = (unsigned char)(xy*(x-x1))+y1;
+		z = (unsigned char)(xz*(x - x1)) + z1;
 		setvoxel(x,y,z);
 	}
 	
@@ -578,14 +579,14 @@ void line_3d_float (vertex point1, vertex point2)
 	dy = y2 - y1;
 	dz = z2 - z1;
 
-	x_inc = (dx < 0) ? -1 : 1;
-	l = abs((long)dx);
+	x_inc = (dx < 0) ? (-1.0f) : (1.0f);
+	l = fabs(dx);
 
-	y_inc = (dy < 0) ? -1 : 1;
-	m = abs ((long)dy);
+	y_inc = (dy < 0) ? (-1.0f) : (1.0f);
+	m = fabs(dy);
 
-	z_inc = (dz < 0) ? -1 : 1;
-	n = abs ((long)dz);
+	z_inc = (dz < 0) ? (-1.0f) : (1.0f);
+	n = fabs(dz);
 
 	dx2 = l*l;
 	dy2 = m*m;

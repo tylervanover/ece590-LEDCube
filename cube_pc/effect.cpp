@@ -10,11 +10,12 @@ void effect_test (void)
 
 	for (i=0;i<1000;i++)
 	{
-		x = sin(i/8.0)*2+3.5;
-		y = cos(i/8.0)*2+3.5;
+		x = (int)(sin(i/8.0)*2+3.5);
+		y = (int)(cos(i/8.0)*2+3.5);
 
 		setvoxel(x,y,1);
 		setvoxel(x,y,1);
+		
 		delay_ms(1000);
 		fill(0x00);
 	}
@@ -820,7 +821,7 @@ void effect_z_updown (int iterations, int delay)
 	unsigned char positions[64];
 	unsigned char destinations[64];
 
-	int i,y,move,px;
+	int i,y,move;
 	
 	for (i=0; i<64; i++)
 	{

@@ -28,11 +28,10 @@ void cube_push (unsigned char data[8][8])
 		}
 	}
 
-	write(tty,&buffer,i);
+	//write(tty,&buffer,i);
 }
 
 int cube_init (void)
 {
-
 	return 1;
 }

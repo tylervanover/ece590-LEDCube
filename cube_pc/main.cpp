@@ -12,14 +12,21 @@
 #include "effect.hpp"
 #include "gameoflife.hpp"
 
-void *cube_updater (unsigned char rs232_cube[8][8]);
+void cube_updater (unsigned char rs232_cube[8][8]);
+
+const int RANDOM_SEED_DEBUG_CONSTANT = 16384;
 
 int main (int argc, char **argv)
 {
-
+#ifdef _DEBUG
+	srand (RANDOM_SEED_DEBUG_CONSTANT);
+#else
+	srand (time(NULL));
+#endif
 	cube_init();
 
-	std::thread cubeUpdaterThread(cube_updater);
+	// ERRORS WITH PASSING volatile unsigned char rs232_cube[8][8]
+	std::thread cubeUpdaterThread(cube_updater, rs232_cube);
 
 	while (1)
 	{
@@ -54,14 +61,13 @@ int main (int argc, char **argv)
 
 }
 
-void *cube_updater (unsigned char rs232_cube[8][8])
+void cube_updater (unsigned char rs232_cube[8][8])
 {
     unsigned char pushcube[8][8];
 
-
 	while (1)
     {
-        memcpy(pushcube, rs232_cube, 64);
+		memcpy((void*)pushcube, (void*)rs232_cube, 64);
 		cube_push(pushcube);
     }
 }

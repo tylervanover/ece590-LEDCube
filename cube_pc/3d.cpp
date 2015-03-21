@@ -10,6 +10,10 @@
 // Number of components to a firework simulation: x,y,z,dx,dy,dz
 #define NUM_FIREWORK_COMPONENTS 6
 
+// Quick way to compute PI.
+const float PI = 4.0f * atanf (1.0);
+const float WAVE_CONSTANT = 9.899495f;
+
 void linespin (int iterations, int delay)
 {
 	float top_x, top_y, top_z, bot_x, bot_y, bot_z, sin_base;
@@ -33,12 +37,12 @@ void linespin (int iterations, int delay)
 		top_y = center_x + cos(sin_base)*5;
 		//top_z = center_x + cos(sin_base/100)*2.5;
 
-		bot_x = center_x + sin(sin_base+3.14)*10;
-		bot_y = center_x + cos(sin_base+3.14)*10;
+		bot_x = center_x + sin(sin_base+PI)*10;
+		bot_y = center_x + cos(sin_base+PI)*10;
 		//bot_z = 7-top_z;
 		
-		bot_z = z;
-		top_z = z;
+		bot_z = (float)z;
+		top_z = (float)z;
 
 		//setvoxel((int) top_x, (int) top_y, 7);
 		//setvoxel((int) bot_x, (int) bot_y, 0);
@@ -68,11 +72,11 @@ void sinelines (int iterations, int delay)
 			x_dividor = 2 + sin((float)i/100)+1;
 			ripple_height = 3 + (sin((float)i/200)+1)*6;
 
-			sine_base = (float) i/40 + (float) x/x_dividor;
+			sine_base = (float) (i/40) + (float) (x/x_dividor);
 
-			left = 4 + sin(sine_base)*ripple_height;
-			right = 4 + cos(sine_base)*ripple_height;
-			right = 7-left;
+			left = (4.0f) + sin(sine_base)*ripple_height;
+			right = (4.0f) + cos(sine_base)*ripple_height;
+			right = (7.0f)-left;
 
 			//printf("%i %i \n", (int) left, (int) right);
 
@@ -88,7 +92,7 @@ void sinelines (int iterations, int delay)
 // Display a sine wave running out from the center of the cube.
 void ripples (int iterations, int delay)
 {
-	float origin_x, origin_y, distance, height, ripple_interval;
+	float distance, height, ripple_interval;
 	int x,y,i;
 
 	fill(0x00);
@@ -99,10 +103,10 @@ void ripples (int iterations, int delay)
 		{
 			for (y=0;y<8;y++)
 			{
-				distance = distance2d(3.5,3.5,x,y)/9.899495*8;
+				distance = (distance2d(3.5, 3.5, (float)x, (float)y)/WAVE_CONSTANT)*(8.0f);
 				//distance = distance2d(3.5,3.5,x,y);
-				ripple_interval =1.3;
-				height = 4+sin(distance/ripple_interval+(float) i/50)*4;
+				ripple_interval = (1.3f);
+				height = 4+sin(distance/ripple_interval+(float) i/50)*(4.0f);
 
 				setvoxel(x,y,(int) height);	
 			}
@@ -122,16 +126,16 @@ void sidewaves (int iterations, int delay)
 	for (i=0;i<iterations;i++)
 	{
 
-		origin_x = 3.5+sin((float)i/500)*4;
-		origin_y = 3.5+cos((float)i/500)*4;
+		origin_x = 3.5f+sin((float)i/500)*(4.0f);
+		origin_y = 3.5f+cos((float)i/500)*(4.0f);
 		
 		for (x=0;x<8;x++)
 		{
 			for (y=0;y<8;y++)
 			{
-				distance = distance2d(origin_x,origin_y,x,y)/9.899495*8;
+				distance = (distance2d(origin_x, origin_y, (float)x, (float)y)/WAVE_CONSTANT)*(8.0f);
 				ripple_interval =2;
-				height = 4+sin(distance/ripple_interval+(float) i/50)*3.6;
+				height = 4+sin((distance/ripple_interval)+(float) i/50)*(3.6f);
 
 				setvoxel(x,y,(int) height);
 				setvoxel(x,y,(int) height);
@@ -151,19 +155,19 @@ void spheremove (int iterations, int delay)
 
 	float origin_x, origin_y, origin_z, distance, diameter;
 
-	origin_x = 0;
-	origin_y = 3.5;
-	origin_z = 3.5;
+	origin_x = 0.0f;
+	origin_y = 3.5f;
+	origin_z = 3.5f;
 
-	diameter = 3;
+	diameter = 3.0f;
 
 	int x, y, z, i;
 
 	for (i=0; i<iterations; i++)
 	{
-		origin_x = 3.5+sin((float)i/50)*2.5;
-		origin_y = 3.5+cos((float)i/50)*2.5;
-		origin_z = 3.5+cos((float)i/30)*2;
+		origin_x = 3.5f + sin((float)i/50)*(2.5f);
+		origin_y = 3.5f + cos((float)i/50)*(2.5f);
+		origin_z = 3.5f + cos((float)i/30)*(2.0f);
 
 		diameter = 2+sin((float)i/150);
 
@@ -173,7 +177,7 @@ void spheremove (int iterations, int delay)
 			{
 				for (z=0; z<8; z++)
 				{
-					distance = distance3d(x,y,z, origin_x, origin_y, origin_z);
+					distance = distance3d((float)x, (float)y, (float)z, origin_x, origin_y, origin_z);
 					//printf("Distance: %f \n", distance);
 
 					if (distance>diameter && distance<diameter+1)
@@ -215,19 +219,18 @@ void fireworks (int iterations, int n, int delay)
 
 	for (i=0; i<iterations; i++)
 	{
-
-		origin_x = rand()%4;
-		origin_y = rand()%4;
-		origin_z = rand()%2;
-		origin_z +=5;
-        origin_x +=2;
-        origin_y +=2;
+		origin_x = (float)(rand() % 4);
+		origin_y = (float)(rand() % 4);
+		origin_z = (float)(rand() % 2);
+		origin_z += (5.0f);
+        origin_x += (2.0f);
+        origin_y += (2.0f);
 
 		// shoot a particle up in the air
 		for (e=0;e<origin_z;e++)
 		{
-			setvoxel(origin_x,origin_y,e);
-			delay_ms(600+500*e);
+			setvoxel((int)origin_x, (int)origin_y, e);
+			delay_ms(600+(500*e));
 			fill(0x00);
 		}
 
@@ -252,9 +255,8 @@ void fireworks (int iterations, int n, int delay)
 		// explode
 		for (e=0; e<25; e++)
 		{
-			slowrate = 1+tan((e+0.1)/20)*10;
-			
-			gravity = tan((e+0.1)/20)/2;
+			slowrate = (1.0f) + (tanf((e+(0.1f))/20) * (10.0f));
+			gravity = tanf((e+(0.1f))/20) / (2.0f);
 
 			for (f=0; f<n; f++)
 			{
@@ -263,7 +265,7 @@ void fireworks (int iterations, int n, int delay)
 				particles[f][2] += particles[f][5]/slowrate;
 				particles[f][2] -= gravity;
 
-				setvoxel(particles[f][0],particles[f][1],particles[f][2]);
+				setvoxel((int)particles[f][0], (int)particles[f][1], (int)particles[f][2]);
 
 
 			}
