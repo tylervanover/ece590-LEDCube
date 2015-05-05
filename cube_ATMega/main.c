@@ -8,6 +8,9 @@
 #include "launch_effect.h"
 #include "draw.h"
 
+
+enum MODE { DEMO, RS232};
+enum MODE mode;
 // Main loop
 // the AVR enters this function at boot time
 int main (void)
@@ -21,7 +24,7 @@ int main (void)
 	// cube interrupt routine. We assign a value to it to make sure it's not >7.
 	current_layer = 1;	
 
-	int i;
+	//int i;
 	
 	// Boot wait
 	// This function serves 3 purposes
@@ -34,7 +37,10 @@ int main (void)
 	//    stopped at is used as a random seed. This ensures true randomness at
 	//    every boot. Without this (or some similar process) the cube would
 	//    produce the same "random" sequence every time
-	i = bootwait();
+
+	//i = bootwait();
+
+	mode = DEMO;
 
 	// Enable interrupts
 	// This starts the routine that draws the cube content
@@ -42,18 +48,26 @@ int main (void)
 
 	// Result for bootwait() is 2:
 	// Go to rs232 mode. this function loops forever.
-	if (i == 2)
-	{
-		rs232();
-	}
+	//if (i == 2)
+	//{
+	//	rs232();
+	//}
 
 	// Result of bootwait() is something other than 2:
 	// Do awesome effects. Loop forever.
 	while (1)
 	{
 		// Show the effects in a predefined order
-		for (i=0; i<EFFECTS_TOTAL; i++)
-			launch_effect(i);
+		if (mode == MODE.DEMO)
+		{
+			for (i=0; i<EFFECTS_TOTAL; i++)
+				launch_effect(i);
+		}
+
+		if (mode == MODE.RS232)
+		{
+			rs232();
+		}
 		
 		// Show the effects in a random order.
 		// Comment the two lines above and uncomment this
@@ -104,6 +118,11 @@ ISR(TIMER2_COMP_vect)
 	// We want to count from 0-7, so set it to 0 when it reaches 8.
 	if (current_layer == 8)
 		current_layer = 0;
+}
+
+ISR(USART_RX_vect)
+{
+	mode = RS232;
 }
 
 
