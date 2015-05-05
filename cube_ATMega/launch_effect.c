@@ -91,7 +91,7 @@ void launch_effect (int effect)
 			
 			
 		case 12:
-			effect_stringfly2("INSTRUCTABLES");
+			effect_stringfly2("KSU ECE");
 			break;
 			
 		case 13:
