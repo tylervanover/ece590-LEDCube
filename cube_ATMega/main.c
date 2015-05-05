@@ -66,6 +66,7 @@ int main (void)
 
 		if (mode == RS232)
 		{
+			fill(0x00);
 			rs232();
 		}
 		

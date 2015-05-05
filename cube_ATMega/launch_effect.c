@@ -13,7 +13,7 @@ void launch_effect (int effect)
 	switch (effect)
 	{
 		case 0x00:
-			effect_rain(100);
+			effect_stringfly2("KSU ECE");
 			break;
 		
 			
@@ -91,7 +91,7 @@ void launch_effect (int effect)
 			
 			
 		case 12:
-			effect_stringfly2("KSU ECE");
+			effect_rain(100);
 			break;
 			
 		case 13:
