@@ -58,13 +58,13 @@ int main (void)
 	while (1)
 	{
 		// Show the effects in a predefined order
-		if (mode == MODE.DEMO)
+		if (mode == DEMO)
 		{
 			for (i=0; i<EFFECTS_TOTAL; i++)
 				launch_effect(i);
 		}
 
-		if (mode == MODE.RS232)
+		if (mode == RS232)
 		{
 			rs232();
 		}
